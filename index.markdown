@@ -4,3 +4,12 @@
 
 layout: home
 ---
+<html>
+	<head>
+	</head>
+	<style>
+	</style>
+	<body>
+	   <h1>Welcome</h1>	
+	</body>
+</html>

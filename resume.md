@@ -1,10 +1,13 @@
+---
+layout: page
+title: Resume
+permalink: /resume/
+---
+
 <html>
     <head>
-        <title>Resume</title>
     </head>
     <body>
-        <a href="index.html">Home</a>
-        <h1>Resume</h1>
         <object
           type="application/pdf"
           data="/docs/pdf/Jeremy Latham Resume.pdf"
