@@ -24,8 +24,6 @@ description: >- # this means to ignore newlines until "baseurl:"
   Personal site created to display skills and projects
 baseurl:  # the subpath of your site, e.g. /blog
 url: "https://chargenp.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
-linkedin_username: lathamjj
-github_username:  chargenp
 
 # Build settings
 #theme: minima
@@ -36,6 +34,10 @@ plugins:
 
 minima:
   skin: dark
+  social_links:
+    - { platform: github,  user_url: "https://github.com/chargenp" }
+    - { platform: twitter, user_url: "https://twitter.com/lathamjj" }
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
