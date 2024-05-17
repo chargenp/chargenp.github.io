@@ -12,7 +12,7 @@ permalink: /resume/
           type="application/pdf"
           data="/docs/pdf/Jeremy Latham Resume.pdf"
           width="1000"
-          height="1200"
+          height="800"
           ></object>
     </body>
 </html>
