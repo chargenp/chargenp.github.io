@@ -36,7 +36,7 @@ minima:
   skin: dark
   social_links:
     - { platform: github,  user_url: "https://github.com/chargenp" }
-    - { platform: twitter, user_url: "https://twitter.com/lathamjj" }
+    - { platform: linkedin, user_url: "https://linkedin.com/lathamjj" }
 
 
 # Exclude from processing.
