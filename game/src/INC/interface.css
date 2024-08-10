@@ -2,7 +2,30 @@ body{
     background-color: #181a1b;
 }
 
-p,title{
+.button {
+    padding: .5em;
+    font-size: 18px;
+    display: inline-block;
+    background-color: #868686;
+    border-radius: .75em;
+    border: 2px solid goldenrod;
+    transition-duration: 0.2s;
+}
+
+.button:hover {
+    color: rgba(255, 255, 255, 0.842);
+    background-color: #181a1b;
+}
+
+p {
+    color: white;
+    
+}
+
+.Version {
+    position: fixed;
+    bottom: 45px;
+    right: 10px;
     color: white;
 }
 

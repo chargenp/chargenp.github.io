@@ -8,28 +8,30 @@
     
     <body>
         <div>
-            <p>Version: 0.0.1a</p>
-        </div>
-        
-        <div>
         <p id="goldMined"></p>
-        <button onclick="mineGold()">Mine Gold</button>
-        <button onclick="buyGoldPerClick()" id="perClickUpgrade"></button>
-        <button onclick="buyDwarves()" id="dwarves"></button>
+        <button class="button" onclick="mineGold()">Mine Gold</button>
+        <button class="button" onclick="buyGoldPerClick()" id="perClickUpgrade"></button>
+        <button class="button" onclick="buyDwarves()" id="dwarves"></button>
         </div>
+
+
+
 
         <div class="status">
             <span id="statusText"></textarea></span>
         </div>
+
+        <div class="Version">
+            <span>Version: 0.0.1a</span>
+        </div>
+
         <div class="navbar">
             <ul>
                 <li class="navSAVE" onclick="saveGame()">Save Game</li>
                 <li class="navLOAD" onclick="loadGame()">Load Game</li>
                 <li class="navDELETE" onclick="deleteSave()">DELETE SAVE</li>
             </ul>
-        </div>
-    
-        
+        </div> 
         <script src="main.js"charset="utf-8 type="text/javascript"></script>
     </body>
 </html>
