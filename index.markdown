@@ -11,5 +11,8 @@ layout: home
 	</style>
 	<body>
 	   <h1>Welcome</h1>	
+	   <div>
+	   <p> <a href="../game/src/INC/index.html">Game</a></p>
+	   </div>
 	</body>
 </html>
