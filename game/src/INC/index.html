@@ -1,37 +1,155 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-    <head>
-        <link rel="stylesheet" type="text/css" href="interface.css" />
-        <title>Gold Miner</title>
-        <meta charset="utf-8">
-    </head>
-    
-    <body>
-        <div>
-        <p id="goldMined"></p>
-        <button class="button" onclick="mineGold()">Mine Gold</button>
-        <button class="button" onclick="buyGoldPerClick()" id="perClickUpgrade"></button>
-        <button class="button" onclick="buyDwarves()" id="dwarves"></button>
-        </div>
+	<head>
+		<link rel="stylesheet" type="text/css" href="index.css">
+		<title>Rock Smacking</title>
+		<meta charset="utf-8">		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
+		<script src="main.js" type="text/javascript"></script>		
+	</head>
+
+	<body>
+		<div class="currency">
+			<p>Currency</p>
+			<span id="pebbles">0 Pebbles</span>
+			<span>&ensp;&ensp;</span>
+			<span id="gold">0 Gold</span
+			<span>&ensp;&ensp;</span>
+		</div>
+		<br>
+		<div class="tabsContainer">
+			<ul class="tabs">
+				<li><a href="#tab1" data-tab="tab1" class="active">Rock</a></li>
+				<li><a href="#tab2" data-tab="tab2">Upgrades</a></li>
+			</ul>
+		</div>
+	
+		<div id="tab1" class="tabContent">
+			<div class="rock">
+				<div class="pebble">
+					<p>There is a giant rock</p>
+					<button class="button" onclick="makePebbles()">Smack It</button>
+				</div>
+				<div class="shard">
+					<p id="shardlevel">Shard Size</p>
+					<span id="shardcost">Cost: 20 </span>
+					<button class="button" onclick="increaseShardSize()">Grab a Bigger Shard</button>
+				</div>
+			</div>
+			<div class="magic">
+				<p id="fey">0 Fey Creatures</p>
+				<span id="feycost">Cost: </span>
+				<button class="button" onclick="recruitFey()">Recruit</button>
+				<p id="dwarves">0 Dwarves Bribed</p>
+				<span id="dwarfcost">Cost: </span>
+				<button class="button" onclick="bribeDwarf()">Bribe</button>
+			</div>
+		</div>
+		
+		<div id="tab2" class="tabContent">
+			<h3 class="text-center text-primary">Tab 2 Content</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+		</div>
+
+		<div class="status"> 
+			<span id="statustext"></span>
+		</div>
 
 
+		<div class="version">
+			<span>Version: 0.0.1b</span>
+		</div>
 
 
-        <div class="status">
-            <span id="statusText"></textarea></span>
-        </div>
+		<div class="navbar">
+			<ul>
+				<li onclick="saveGame('Saved')">Save Game</li>
+				<li class="navDELETE" onclick="deleteGame()">DELETE SAVE</li>
+				<li onclick="loadGame()">Load Game</li>
+				<div class="autosaveWrapper">
+					<li class="autosave">Autosave</li>
+					<li class="autosaveButton">
+						<div class="checkbox-wrapper-6">
+							<input class="tgl tgl-light" id="cb1-6" type="checkbox"/>
+							<label class="tgl-btn" for="cb1-6"></label>
+						</div>
+					</li>
+				</div>
+				<style>
+				  .checkbox-wrapper-6 .tgl {
+					display: none;
+				  }
+				  .checkbox-wrapper-6 .tgl,
+				  .checkbox-wrapper-6 .tgl:after,
+				  .checkbox-wrapper-6 .tgl:before,
+				  .checkbox-wrapper-6 .tgl *,
+				  .checkbox-wrapper-6 .tgl *:after,
+				  .checkbox-wrapper-6 .tgl *:before,
+				  .checkbox-wrapper-6 .tgl + .tgl-btn {
+					box-sizing: border-box;
+				  }
+				  .checkbox-wrapper-6 .tgl::-moz-selection,
+				  .checkbox-wrapper-6 .tgl:after::-moz-selection,
+				  .checkbox-wrapper-6 .tgl:before::-moz-selection,
+				  .checkbox-wrapper-6 .tgl *::-moz-selection,
+				  .checkbox-wrapper-6 .tgl *:after::-moz-selection,
+				  .checkbox-wrapper-6 .tgl *:before::-moz-selection,
+				  .checkbox-wrapper-6 .tgl + .tgl-btn::-moz-selection,
+				  .checkbox-wrapper-6 .tgl::selection,
+				  .checkbox-wrapper-6 .tgl:after::selection,
+				  .checkbox-wrapper-6 .tgl:before::selection,
+				  .checkbox-wrapper-6 .tgl *::selection,
+				  .checkbox-wrapper-6 .tgl *:after::selection,
+				  .checkbox-wrapper-6 .tgl *:before::selection,
+				  .checkbox-wrapper-6 .tgl + .tgl-btn::selection {
+					background: none;
+				  }
+				  .checkbox-wrapper-6 .tgl + .tgl-btn {
+					outline: 0;
+					display: block;
+					width: 60px;
+					height: 30px;
+					position: relative;
+					cursor: pointer;
+					-webkit-user-select: none;
+					   -moz-user-select: none;
+						-ms-user-select: none;
+							user-select: none;
+				  }
+				  .checkbox-wrapper-6 .tgl + .tgl-btn:after,
+				  .checkbox-wrapper-6 .tgl + .tgl-btn:before {
+					position: relative;
+					display: block;
+					content: "";
+					width: 50%;
+					height: 100%;
+				  }
+				  .checkbox-wrapper-6 .tgl + .tgl-btn:after {
+					left: 0;
+				  }
+				  .checkbox-wrapper-6 .tgl + .tgl-btn:before {
+					display: none;
+				  }
+				  .checkbox-wrapper-6 .tgl:checked + .tgl-btn:after {
+					left: 50%;
+				  }
 
-        <div class="Version">
-            <span>Version: 0.0.1a</span>
-        </div>
-
-        <div class="navbar">
-            <ul>
-                <li class="navSAVE" onclick="saveGame()">Save Game</li>
-                <li class="navLOAD" onclick="loadGame()">Load Game</li>
-                <li class="navDELETE" onclick="deleteSave()">DELETE SAVE</li>
-            </ul>
-        </div> 
-        <script src="main.js"charset="utf-8 type="text/javascript"></script>
-    </body>
+				  .checkbox-wrapper-6 .tgl-light + .tgl-btn {
+					background: lightgray;
+					border-radius: 2em;
+					padding: 2px;
+					transition: all 0.4s ease;
+				  }
+				  .checkbox-wrapper-6 .tgl-light + .tgl-btn:after {
+					border-radius: 50%;
+					background: black;
+					transition: all 0.2s ease;
+				  }
+				  .checkbox-wrapper-6 .tgl-light:checked + .tgl-btn {
+					background: blue;
+				  }
+				</style>
+			</ul>
+		</div>	
+	</body>
 </html>

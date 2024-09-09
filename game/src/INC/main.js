@@ -1,94 +1,235 @@
-var gameData = { 
-    gold: 0,
-    goldPerClick: 1,
-    goldPerClickCost: 10,
-    dwarves: 0,
-    goldCostPerDwarf: 100,
-    goldMinedPerDwarf: 10
+var gameData = {
+	pebbles: 0,
+	shardlevel: 1,
+	shardcost: 20,
+	shardpower: 1,
+	shardproduction: 0,
+	fey: 0,
+	feycost: 100,
+	feypower: 1,
+	feyproduction: 0,
+	feyinterval: 5000,
+	gold: 0,
+	dwarves: 0,
+	dwarfcost: 10,
+	dwarfpower: 2,
+	dwarfproduction: 0,
+	dwarfinterval: 3000
+};
+
+function bribeDwarf() {
+	if (gameData.gold >= gameData.dwarfcost) {
+		gameData.gold -= gameData.dwarfcost;
+		gameData.dwarves += 1;
+		calcDwarfProduction();
+		calcDwarfCost();
+		updateUI();
+	}
 }
 
-function mineGold() {
-    gameData.gold += gameData.goldPerClick;
-    document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined";
+function dwarfProduction() {
+	gameData.pebbles += gameData.dwarfproduction;
+	updateCurrencies();
 }
 
-function buyGoldPerClick() {
-    if (gameData.gold >= gameData.goldPerClickCost) {
-        gameData.gold -= gameData.goldPerClickCost
-        gameData.goldPerClick += 1
-        gameData.goldPerClickCost *= 2
-        document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined"
-        document.getElementById("perClickUpgrade").innerHTML = "Upgrade Pickaxe (Currenty level " 
-            + gameData.goldPerClick + ") Cost: " + gameData.goldPerClickCost + " Gold"
-    }
+function calcDwarfCost() {
+	gameData.dwarfcost = Math.round(10 * ((2.3)**(gameData.dwarves)));
 }
 
-function buyDwarves() {
-    if (gameData.gold >= gameData.goldCostPerDwarf) {
-        gameData.gold -= gameData.goldCostPerDwarf
-        gameData.dwarves += 1
-        gameData.goldCostPerDwarf *= 2
-        document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined"
-        document.getElementById("dwarves").innerHTML = "Buy Dwarves (Currenty have " 
-            + gameData.dwarves + ") Cost: " + gameData.goldCostPerDwarf + " Gold"
-    }
+function calcDwarfProduction() {
+	gameData.dwarfproduction = ((1 * gameData.shardlevel) * gameData.shardpower) * ((1 * gameData.dwarves) * gameData.dwarfpower); // (pebble function) * (base * owned) * multipliers
 }
 
-function updateStatus (txt) {
-    document.getElementById("statusText").setAttribute("class", "text-fade");
-    setTimeout(() => {
-        document.getElementById("statusText").innerHTML = txt;
-        document.getElementById("statusText").setAttribute("class", "text-show");
-    }, 500);
-    setTimeout(() => {
-        document.getElementById("statusText").setAttribute("class", "text-fade");
-        setTimeout(() => {
-            document.getElementById("statusText").innerHTML = "";
-        }, 500);      
-    }, 2000);
+function feyProduction() {
+	if (gameData.pebbles >= gameData.feyproduction) {
+		gameData.pebbles -= gameData.feyproduction;
+		gameData.gold += gameData.feyproduction;
+		updateCurrencies();
+	}
 }
 
-function saveGame() {
-    var save = gameData;
-    localStorage.setItem("save", JSON.stringify(save));
-    updateStatus("Game Saved");
+function recruitFey() {
+	if (gameData.pebbles >= gameData.feycost) {
+		gameData.pebbles -= gameData.feycost;
+		gameData.fey += 1;
+		calcFeyProduction();
+		calcFeyCost();
+		updateUI();
+	}
 }
 
-function loadGame() {
-    var savegame = JSON.parse(localStorage.getItem("save"));
-    if (savegame != null) {
-        gameData = savegame;
-    }
-    updateUI();
-    updateStatus("Game Loaded");
+function calcFeyCost() {
+	gameData.feycost = Math.round(100 * ((1.9)**(gameData.fey)));
 }
 
-function deleteSave() { 
-    localStorage.removeItem("save");
-    window.location.reload();
-    updateStatus("Game Reset");
+function calcFeyProduction() {
+	gameData.feyproduction = ((1 * gameData.fey) * gameData.feypower); // (base * owned) * multipliers
+}
+
+function calcShardCost() {
+	gameData.shardcost = Math.round(20 * ((1.5)**(gameData.shardlevel - 1)));
+	
+}
+
+function makePebbles() {
+	gameData.pebbles += gameData.shardproduction;
+	document.getElementById("pebbles").innerHTML = gameData.pebbles + " Pebbles";
+}
+
+function calcShardProduction() {
+	gameData.shardproduction = ((1 * gameData.shardlevel) * gameData.shardpower); // (base * owned) * multipliers
+}
+
+function increaseShardSize() {
+	if (gameData.pebbles >= gameData.shardcost) {
+		gameData.pebbles -= gameData.shardcost;
+		gameData.shardlevel += 1;
+
+		calcShardCost();
+		calcShardProduction();
+		calcDwarfProduction();
+		updateUI();
+	}
+}
+
+function updateCurrencies() {
+	document.getElementById("pebbles").innerHTML = gameData.pebbles + " Pebbles";
+	document.getElementById("gold").innerHTML = gameData.gold + " Gold";
 }
 
 function updateUI() {
-    document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined";
-    document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined"
-    document.getElementById("perClickUpgrade").innerHTML = "Upgrade Pickaxe (Currenty level " 
-        + gameData.goldPerClick + ") Cost: " + gameData.goldPerClickCost + " Gold"
-    document.getElementById("dwarves").innerHTML = "Buy Dwarves (Currenty have " 
-        + gameData.dwarves + ") Cost: " + gameData.goldCostPerDwarf + " Gold"
+	calcDwarfCost();
+	calcFeyCost();
+	calcShardCost();
+	calcDwarfProduction();
+	calcFeyProduction();
+	calcShardProduction();
+	updateCurrencies();
+	document.getElementById("shardlevel").innerHTML = "Shard&nbspSize:&nbsp;" + gameData.shardlevel  + "&ensp;&ensp;" + gameData.shardproduction + "&nbspPebbles&nbsp/&nbspclick";
+	document.getElementById("shardcost").innerHTML = "Cost: " + gameData.shardcost + "&ensp;&ensp;"; 
+	var ratio = 
+	document.getElementById("fey").innerHTML = gameData.fey + "&nbspFey&nbspCreatures" + "&ensp;&ensp;" 
+		+ gameData.feyproduction + "&nbspGold&nbspConversion&nbsp/&nbsp" + (gameData.feyinterval/1000) + "s";
+	document.getElementById("feycost").innerHTML = "Cost: " + gameData.feycost + "&ensp;&ensp;" ;
+	document.getElementById("dwarfcost").innerHTML = "Cost: " + gameData.dwarfcost + "&ensp;&ensp;";
+	document.getElementById("dwarves").innerHTML = gameData.dwarves + "&nbspDwarves&nbspBribed&ensp;&ensp;" 
+		+ gameData.dwarfproduction + "&nbspPebbles&nbsp/&nbsp" + (gameData.dwarfinterval/1000) + "s";
+	
+	
 }
 
-var saveGameLoop = window.setInterval(function() {
-    localStorage.setItem("save", JSON.stringify(gameData))
-},15000)
-
-var mainGameLoop = window.setInterval(function() {
-    dwarfMiners()
-}, 1000)
-
-function dwarfMiners() {
-    gameData.gold += gameData.dwarves * gameData.goldMinedPerDwarf
-    document.getElementById("goldMined").innerHTML = gameData.gold + " Gold Mined";
+function updateStatus(txt) {
+	document.getElementById("statustext").innerHTML = txt;
+	document.getElementById("statustext").setAttribute("class", "text-show");
+	setTimeout(() => { 
+		document.getElementById("statustext").setAttribute("class", "text-hide");
+	}, 1000);
 }
 
-window.onload = loadGame();
+function saveGame(txt) {
+	localStorage.setItem("save", JSON.stringify(gameData));
+	saveCheckboxStates();
+	updateStatus(txt);
+}
+
+function loadGame() {
+	var savegame = JSON.parse(localStorage.getItem("save"));
+	if (savegame != null) {
+		Object.keys(gameData).forEach(key => {
+			if (Object.hasOwnProperty.call(savegame, key)){
+				gameData[key] = savegame[key];		
+			}
+		});
+	}
+	loadCheckboxStates();
+	updateUI();
+	updateStatus("game loaded");
+}
+
+function deleteGame() {
+	localStorage.removeItem("save");
+	localStorage.removeItem("cb1-6");
+	location.reload();
+}
+
+function saveCheckboxStates() {
+	const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+	checkboxes.forEach((checkbox) => {
+		localStorage.setItem(checkbox.id, checkbox.checked);
+	});
+}
+
+function loadCheckboxStates() {
+	const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+	checkboxes.forEach((checkbox) => {
+		const savedState = localStorage.getItem(checkbox.id);
+		if (savedState != null) {
+			checkbox.checked = savedState === 'true';
+			if(document.getElementById('cb1-6').checked) {
+				savegameloop = window.setInterval(function(){
+					saveGame("Autosaved");
+				}, 15000); 
+			}
+			else {
+				clearInterval(savegameloop);
+			}
+		}
+	});
+}
+
+var savegameloop;
+
+var feyloop = window.setInterval(function() {
+	if (gameData.fey > 0) {
+		feyProduction();
+	}
+}, gameData.feyinterval);
+
+var dwarfloop = window.setInterval(function() {
+	if (gameData.dwarves > 0) {
+		dwarfProduction();
+	}
+}, gameData.dwarfinterval);
+
+
+//Jquery
+ $(document).ready(function() {
+	loadGame();
+    $('.tabContent').not(':first').hide();
+    $('.tabs a').click(function() {  
+      $('.tabContent').hide();
+      $('.tabs a').removeClass('active');
+      $(this).addClass('active');
+      var tab = $(this).data('tab');
+      $('#' + tab).show();
+ 	});
+
+	$('.autosave').on("click", function() {
+		var checkboxes = $('input[type="checkbox"]');
+		checkboxes.prop("checked", !checkboxes.prop("checked"));
+		if(document.getElementById('cb1-6').checked) {
+			savegameloop = window.setInterval(function(){
+				saveGame("Autosaved");
+			}, 15000); 
+		}
+		else {
+			clearInterval(savegameloop);
+		}	
+		saveCheckboxStates();
+	});
+
+	$('#cb1-6').change(function() {
+		saveCheckboxStates();
+		if(document.getElementById('cb1-6').checked) {
+			savegameloop = window.setInterval(function(){
+				saveGame("Autosaved");
+			}, 15000); 
+		}
+		else {
+			clearInterval(savegameloop);
+		}	
+	});
+	
+ });
+
+
