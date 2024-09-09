@@ -126,10 +126,10 @@ function updateStatus(txt) {
 	}, 1000);
 }
 
-function saveGame() {
+function saveGame(txt) {
 	localStorage.setItem("save", JSON.stringify(gameData));
 	saveCheckboxStates();
-	updateStatus("Saved");
+	updateStatus(txt);
 }
 
 function loadGame() {
@@ -148,6 +148,7 @@ function loadGame() {
 
 function deleteGame() {
 	localStorage.removeItem("save");
+	localStorage.removeItem("cb1-6");
 	location.reload();
 }
 
@@ -164,31 +165,18 @@ function loadCheckboxStates() {
 		const savedState = localStorage.getItem(checkbox.id);
 		if (savedState != null) {
 			checkbox.checked = savedState === 'true';
-			if (checkbox.checked === true) {
-				savegameloop = window.setInterval(function() {
-				localStorage.setItem("save", JSON.stringify(gameData));
-				updateStatus("Autosaved");
-				}, 15000);
+			if(document.getElementById('cb1-6').checked) {
+				savegameloop = window.setInterval(function(){
+					saveGame("Autosaved");
+				}, 15000); 
+			}
+			else {
+				clearInterval(savegameloop);
 			}
 		}
 	});
 }
 
-const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-checkboxes.forEach((checkbox) => { 
-	checkbox.addEventListener('change', saveCheckboxStates);
-	checkbox.addEventListener('change', (event) => {
-		if (event.currentTarget.checked) {
-			savegameloop = window.setInterval(function() {
-				localStorage.setItem("save", JSON.stringify(gameData));
-				updateStatus("Autosaved");
-			}, 5000);
-		} else {
-			clearInterval(savegameloop);
-		}
-	});			
-});
-	
 var savegameloop;
 
 var feyloop = window.setInterval(function() {
@@ -205,29 +193,43 @@ var dwarfloop = window.setInterval(function() {
 
 
 //Jquery
-
-$(document).ready(function(){
-	loadGame();
-});
-
  $(document).ready(function() {
-    // Hide all tab content except the first
+	loadGame();
     $('.tabContent').not(':first').hide();
-    // Bind click event to tabs links
     $('.tabs a').click(function() {  
-      //Hide all tab content
       $('.tabContent').hide();
-      // Remove active class from all tabs links
       $('.tabs a').removeClass('active');
-      // Add active class to clicked tab link
       $(this).addClass('active');
-      // Get data-tab attribute value
       var tab = $(this).data('tab');
-      // Show corresponding tab content
       $('#' + tab).show();
-    });
-  });
+ 	});
 
- 
+	$('.autosave').on("click", function() {
+		var checkboxes = $('input[type="checkbox"]');
+		checkboxes.prop("checked", !checkboxes.prop("checked"));
+		if(document.getElementById('cb1-6').checked) {
+			savegameloop = window.setInterval(function(){
+				saveGame("Autosaved");
+			}, 15000); 
+		}
+		else {
+			clearInterval(savegameloop);
+		}	
+		saveCheckboxStates();
+	});
+
+	$('#cb1-6').change(function() {
+		saveCheckboxStates();
+		if(document.getElementById('cb1-6').checked) {
+			savegameloop = window.setInterval(function(){
+				saveGame("Autosaved");
+			}, 15000); 
+		}
+		else {
+			clearInterval(savegameloop);
+		}	
+	});
+	
+ });
 
 

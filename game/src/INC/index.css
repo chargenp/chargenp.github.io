@@ -104,8 +104,10 @@ li.autosaveButton{
 	overflow: none;
 }
 
-li.autosave:hover {
+li.autosave:hover,
+li.autosaveButton:hover {
 	background-color: #666666!important;
+	cursor: pointer;
 }
 
 .navbar li:hover{
